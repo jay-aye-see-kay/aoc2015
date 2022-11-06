@@ -32,10 +32,8 @@ export function part1(input: string) {
   const lights = new Set();
   const instructions = parse(input);
   for (const { type, start, end } of instructions) {
-    const [minX, maxX] = [start[0], end[0]];
-    const [minY, maxY] = [start[1], end[1]];
-    for (let x = minX; x <= maxX; x++) {
-      for (let y = minY; y <= maxY; y++) {
+    for (let x = start[0]; x <= end[0]; x++) {
+      for (let y = start[1]; y <= end[1]; y++) {
         const posStr = `${x},${y}`;
         switch (type) {
           case "on":
@@ -81,4 +79,57 @@ function parse(input: string) {
       .map((coord) => coord.split(",").map((c) => parseInt(c, 10)));
     return { type, start, end };
   });
+}
+
+/**
+--- Part Two ---
+
+You just finish implementing your winning light pattern when you realize you
+mistranslated Santa's message from Ancient Nordic Elvish.
+
+The light grid you bought actually has individual brightness controls; each
+light can have a brightness of zero or more. The lights all start at zero.
+
+The phrase turn on actually means that you should increase the brightness of
+those lights by 1.
+
+The phrase turn off actually means that you should decrease the brightness of
+those lights by 1, to a minimum of zero.
+
+The phrase toggle actually means that you should increase the brightness of
+those lights by 2.
+
+What is the total brightness of all lights combined after following Santa's
+instructions?
+
+For example:
+
+- turn on 0,0 through 0,0 would increase the total brightness by 1.
+- toggle 0,0 through 999,999 would increase the total brightness by 2000000.
+*/
+export function part2(input: string) {
+  const instructions = parse(input);
+  const lights: Record<string, number> = {};
+
+  for (const { type, start, end } of instructions) {
+    for (let x = start[0]; x <= end[0]; x++) {
+      for (let y = start[1]; y <= end[1]; y++) {
+        const posStr = `${x},${y}`;
+        const oldVal = lights[posStr] ?? 0;
+        switch (type) {
+          case "on":
+            lights[posStr] = oldVal + 1;
+            break;
+          case "off":
+            lights[posStr] = oldVal > 0 ? oldVal - 1 : 0;
+            break;
+          case "toggle":
+            lights[posStr] = oldVal + 2;
+            break;
+        }
+      }
+    }
+  }
+
+  return Object.values(lights).reduce((sum, num) => sum + num, 0);
 }
