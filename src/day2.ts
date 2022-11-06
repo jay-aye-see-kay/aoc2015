@@ -21,14 +21,49 @@ All numbers in the elves' list are in feet. How many total square feet of
 wrapping paper should they order?
 */
 export function part1(input: string) {
-  return parse(input)
-    .flatMap(({ l, w, h }) => {
-      const sides: number[] = [l * w, w * h, h * l];
-      const smallestSide = Math.min(...sides);
-      return [smallestSide, ...sides.map((s) => 2 * s)];
-    })
-    .reduce((sum, val) => sum + val, 0);
+  const paperAreas = parse(input).map(({ l, w, h }) => {
+    const sides = [l * w, w * h, h * l];
+    const smallestSide = Math.min(...sides);
+    return sum(sides.map((s) => 2 * s).concat(smallestSide));
+  });
+  return sum(paperAreas);
 }
+
+/** 
+--- Part Two ---
+
+The elves are also running low on ribbon. Ribbon is all the same width, so they
+only have to worry about the length they need to order, which they would again
+like to be exact.
+
+The ribbon required to wrap a present is the shortest distance around its
+sides, or the smallest perimeter of any one face. Each present also requires a
+bow made out of ribbon as well; the feet of ribbon required for the perfect bow
+is equal to the cubic feet of volume of the present. Don't ask how they tie
+the bow, though; they'll never tell.
+
+For example:
+
+- A present with dimensions 2x3x4 requires 2+2+3+3 = 10 feet of ribbon to wrap
+  the present plus 2*3*4 = 24 feet of ribbon for the bow, for a total of 34
+  feet.
+- A present with dimensions 1x1x10 requires 1+1+1+1 = 4 feet of ribbon to wrap
+  the present plus 1*1*10 = 10 feet of ribbon for the bow, for a total of 14
+  feet.
+
+How many total feet of ribbon should they order?
+*/
+export function part2(input: string) {
+  const ribbonLengths = parse(input).map(({ l, w, h }) => {
+    const perimeters = [2 * l + 2 * w, 2 * w + 2 * h, 2 * h + 2 * l];
+    const smallestPerimeter = Math.min(...perimeters);
+    const volume = l * w * h;
+    return smallestPerimeter + volume;
+  });
+  return sum(ribbonLengths);
+}
+
+// ---
 
 function parse(input: string) {
   return input
@@ -38,4 +73,8 @@ function parse(input: string) {
       const [l, w, h] = line.split("x").map((num) => parseInt(num, 10));
       return { l, w, h };
     });
+}
+
+function sum(nums: number[]) {
+  return nums.reduce((sum, val) => sum + val, 0);
 }
