@@ -57,7 +57,82 @@ export function part1(input: string) {
   const wires = Object.fromEntries(
     parse(input).map((wire) => [wire.output, wire])
   );
+  return runSimulation(wires);
+}
 
+/**
+--- Part Two ---
+
+Now, take the signal you got on wire a, override wire b to that signal, and
+reset the other wires (including wire a). What new signal is ultimately
+provided to wire a?
+*/
+export function part2(input: string) {
+  const wires = Object.fromEntries(
+    parse(input).map((wire) => [wire.output, wire])
+  );
+  const part1Answer = runSimulation(wires).a;
+
+  const part2Wires = Object.fromEntries(
+    parse(input).map((wire) => [wire.output, wire])
+  );
+  part2Wires.b = { type: "eq", output: "b", lhs: part1Answer };
+  return runSimulation(part2Wires);
+}
+
+// ---
+
+type Value = string | number;
+type Expr =
+  | { type: "eq"; lhs: Value; output: string }
+  | { type: "unary"; op: "not"; lhs: Value; output: string }
+  | {
+      type: "binary";
+      op: "AND" | "OR" | "LSHIFT" | "RSHIFT";
+      lhs: Value;
+      rhs: Value;
+      output: string;
+    };
+
+function parse(input: string) {
+  return input
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => !!line)
+    .map((line): Expr => {
+      const [lhsString, output] = line.split(" -> ");
+      const lhsElements = lhsString.split(" ");
+      const strOrNum = (s: string) =>
+        Number.isNaN(parseInt(s)) ? s : parseInt(s);
+
+      if (lhsElements.length === 1) {
+        return { type: "eq", lhs: strOrNum(lhsElements[0]), output };
+      } else if (lhsElements.length === 2) {
+        return {
+          type: "unary",
+          op: "not",
+          lhs: strOrNum(lhsElements[1]),
+          output,
+        };
+      } else if (lhsElements.length === 3) {
+        return {
+          type: "binary",
+          op: lhsElements[1] as "AND" | "OR" | "LSHIFT" | "RSHIFT",
+          lhs: strOrNum(lhsElements[0]),
+          rhs: strOrNum(lhsElements[2]),
+          output,
+        };
+      } else {
+        throw new Error(`unexpected lhsString ${lhsString}`);
+      }
+    });
+}
+
+function uint16(n: number) {
+  return n & 0xffff;
+}
+
+function runSimulation(wires: Record<string, Expr>) {
   let hasMore = true;
   while (hasMore) {
     hasMore = false;
@@ -126,58 +201,6 @@ export function part1(input: string) {
   }
 
   return Object.fromEntries(
-    Object.entries(wires).map(([outName, wire]) =>
-      wire.type === "eq" ? [outName, wire.lhs] : [outName, wire]
-    )
+    Object.entries(wires).map(([outName, wire]) => [outName, wire.lhs])
   );
-}
-
-type Value = string | number;
-type Expr =
-  | { type: "eq"; lhs: Value; output: string }
-  | { type: "unary"; op: "not"; lhs: Value; output: string }
-  | {
-      type: "binary";
-      op: "AND" | "OR" | "LSHIFT" | "RSHIFT";
-      lhs: Value;
-      rhs: Value;
-      output: string;
-    };
-
-function parse(input: string) {
-  return input
-    .split("\n")
-    .map((line) => line.trim())
-    .filter((line) => !!line)
-    .map((line): Expr => {
-      const [lhsString, output] = line.split(" -> ");
-      const lhsElements = lhsString.split(" ");
-      const strOrNum = (s: string) =>
-        Number.isNaN(parseInt(s)) ? s : parseInt(s);
-
-      if (lhsElements.length === 1) {
-        return { type: "eq", lhs: strOrNum(lhsElements[0]), output };
-      } else if (lhsElements.length === 2) {
-        return {
-          type: "unary",
-          op: "not",
-          lhs: strOrNum(lhsElements[1]),
-          output,
-        };
-      } else if (lhsElements.length === 3) {
-        return {
-          type: "binary",
-          op: lhsElements[1] as "AND" | "OR" | "LSHIFT" | "RSHIFT",
-          lhs: strOrNum(lhsElements[0]),
-          rhs: strOrNum(lhsElements[2]),
-          output,
-        };
-      } else {
-        throw new Error(`unexpected lhsString ${lhsString}`);
-      }
-    });
-}
-
-function uint16(n: number) {
-  return n & 0xffff;
 }

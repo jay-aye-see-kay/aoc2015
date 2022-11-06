@@ -1,5 +1,5 @@
 import fs from "fs/promises";
-import { part1 } from "./day7";
+import { part1, part2 } from "./day7";
 
 describe("part 1", () => {
   it("sample", () => {
@@ -28,5 +28,12 @@ describe("part 1", () => {
   it("real answer", async () => {
     const input = await fs.readFile("./src/day7.input", "utf8");
     expect(part1(input).a).toEqual(3176);
+  });
+});
+
+describe("part 2", () => {
+  it("real answer", async () => {
+    const input = await fs.readFile("./src/day7.input", "utf8");
+    expect(part2(input).a).toEqual(14710);
   });
 });
