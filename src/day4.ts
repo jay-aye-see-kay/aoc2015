@@ -1,6 +1,9 @@
 import { createHash } from "node:crypto";
 
-/** 
+/** to prevent infinite loops */
+const CUTOFF = 10_000_000;
+
+/**
 --- Day 4: The Ideal Stocking Stuffer ---
 
 Santa needs help mining some AdventCoins (very similar to bitcoins) to use as
@@ -24,15 +27,25 @@ For example:
 Your puzzle input is ckczppom.
 */
 export function part1(input: string): number {
-  // prevent infinite loops
-  const CUTOFF = 10_000_000;
-
   for (let index = 0; index < CUTOFF; index++) {
     if (md5(`${input}${index}`).slice(0, 5) === "00000") {
       return index;
     }
   }
+  throw new Error("couldn't find");
+}
 
+/**
+--- Part Two ---
+
+Now find one that starts with six zeroes.
+*/
+export function part2(input: string): number {
+  for (let index = 0; index < CUTOFF; index++) {
+    if (md5(`${input}${index}`).slice(0, 6) === "000000") {
+      return index;
+    }
+  }
   throw new Error("couldn't find");
 }
 
