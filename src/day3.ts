@@ -23,32 +23,85 @@ For example:
   houses.
 */
 export function part1(input: string) {
-  const position = {
-    x: 0,
-    y: 0,
-    toString: function () {
-      return `${this.x},${this.y}`;
-    },
-  };
+  const santa = new Position();
   const visited = new Set();
-  visited.add(position.toString());
+  visited.add(santa.toString());
 
   for (const movement of input) {
     switch (movement) {
       case "^":
-        position.y += 1;
+        santa.y += 1;
         break;
       case "v":
-        position.y -= 1;
+        santa.y -= 1;
         break;
       case ">":
-        position.x += 1;
+        santa.x += 1;
         break;
       case "<":
-        position.x -= 1;
+        santa.x -= 1;
         break;
     }
-    visited.add(position.toString());
+    visited.add(santa.toString());
   }
   return visited.size;
+}
+
+/** 
+--- Part Two ---
+
+The next year, to speed up the process, Santa creates a robot version of
+himself, Robo-Santa, to deliver presents with him.
+
+Santa and Robo-Santa start at the same location (delivering two presents to the
+same starting house), then take turns moving based on instructions from the
+elf, who is eggnoggedly reading from the same script as the previous year.
+
+This year, how many houses receive at least one present?
+
+For example:
+
+- ^v delivers presents to 3 houses, because Santa goes north, and then
+  Robo-Santa goes south.
+- ^>v< now delivers presents to 3 houses, and Santa and Robo-Santa end up back
+  where they started.
+- ^v^v^v^v^v now delivers presents to 11 houses, with Santa going one direction
+  and Robo-Santa going the other.
+*/
+export function part2(input: string) {
+  const santa = new Position();
+  const robot = new Position();
+  const visited = new Set();
+  visited.add(santa.toString());
+
+  let movedThing;
+  for (const movement of input) {
+    movedThing = movedThing === santa ? robot : santa;
+    switch (movement) {
+      case "^":
+        movedThing.y += 1;
+        break;
+      case "v":
+        movedThing.y -= 1;
+        break;
+      case ">":
+        movedThing.x += 1;
+        break;
+      case "<":
+        movedThing.x -= 1;
+        break;
+    }
+    visited.add(movedThing.toString());
+  }
+  return visited.size;
+}
+
+// ---
+
+class Position {
+  x = 0;
+  y = 0;
+  toString() {
+    return `${this.x},${this.y}`;
+  }
 }
