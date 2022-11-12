@@ -21,11 +21,11 @@
 ///
 /// For example:
 ///
-///     (()) and ()() both result in floor 0.
-///     ((( and (()(()( both result in floor 3.
-///     ))((((( also results in floor 3.
-///     ()) and ))( both result in floor -1 (the first basement level).
-///     ))) and )())()) both result in floor -3.
+/// - (()) and ()() both result in floor 0.
+/// - ((( and (()(()( both result in floor 3.
+/// - ))((((( also results in floor 3.
+/// - ()) and ))( both result in floor -1 (the first basement level).
+/// - ))) and )())()) both result in floor -3.
 ///
 /// To what floor do the instructions take Santa?
 fn part1(input: &str) -> i32 {
@@ -45,8 +45,8 @@ fn part1(input: &str) -> i32 {
 ///
 /// For example:
 ///
-///     ) causes him to enter the basement at character position 1.
-///     ()()) causes him to enter the basement at character position 5.
+/// - ) causes him to enter the basement at character position 1.
+/// - ()()) causes him to enter the basement at character position 5.
 ///
 /// What is the position of the character that causes Santa to first enter the
 /// basement?
