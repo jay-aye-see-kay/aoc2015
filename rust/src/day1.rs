@@ -36,6 +36,36 @@ fn part1(input: &str) -> i32 {
     })
 }
 
+/// --- Part Two ---
+/// 
+/// Now, given the same instructions, find the position of the first
+/// character that causes him to enter the basement (floor -1). The first
+/// character in the instructions has position 1, the second character has
+/// position 2, and so on.
+/// 
+/// For example:
+/// 
+///     ) causes him to enter the basement at character position 1.
+///     ()()) causes him to enter the basement at character position 5.
+/// 
+/// What is the position of the character that causes Santa to first enter the
+/// basement?
+fn part2(input: &str) -> Option<i32> {
+    let mut floor = 0;
+
+    for (index, char) in input.chars().enumerate() {
+        floor = match char {
+            '(' => floor + 1,
+            ')' => floor - 1,
+            _ => floor,
+        };
+        if floor == -1 {
+            return Some(1 + index as i32);
+        }
+    }
+    return None;
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -62,5 +92,19 @@ mod tests {
     fn test_part_1_real() {
         let input = fs::read_to_string("../inputs/day1.txt").unwrap();
         assert_eq!(part1(&input), 280);
+    }
+
+    #[test]
+    fn test_part_2_samples() {
+        let test_cases = vec![(")", 1), ("()())", 5)];
+        test_cases.iter().for_each(|(input, expected)| {
+            assert_eq!(part2(&input), Some(*expected));
+        });
+    }
+
+    #[test]
+    fn test_part_2_real() {
+        let input = fs::read_to_string("../inputs/day1.txt").unwrap();
+        assert_eq!(part2(&input), Some(1797));
     }
 }
