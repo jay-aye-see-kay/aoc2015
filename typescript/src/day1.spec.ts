@@ -16,12 +16,12 @@ describe("part 1", () => {
   });
 
   it("real answer", async () => {
-    const input = await fs.readFile("./src/day1.input", "utf8");
+    const input = await fs.readFile("../inputs/day1.txt", "utf8");
     expect(part1(input)).toEqual(280);
   });
 });
 
-describe("part 1", () => {
+describe("part 2", () => {
   it.each([
     [")", 1],
     ["()())", 5],
@@ -30,7 +30,7 @@ describe("part 1", () => {
   });
 
   it("real answer", async () => {
-    const input = await fs.readFile("./src/day1.input", "utf8");
+    const input = await fs.readFile("../inputs/day1.txt", "utf8");
     expect(part2(input)).toEqual(1797);
   });
 });

@@ -13,7 +13,7 @@ describe("part 1", () => {
   });
 
   it("real answer", async () => {
-    const input = await fs.readFile("./src/day5.input", "utf8");
+    const input = await fs.readFile("../inputs/day5.txt", "utf8");
     expect(part1(input)).toEqual(255);
   });
 });
@@ -29,7 +29,7 @@ describe("part 2", () => {
   });
 
   it("real answer", async () => {
-    const input = await fs.readFile("./src/day5.input", "utf8");
+    const input = await fs.readFile("../inputs/day5.txt", "utf8");
     expect(part2(input)).toEqual(55);
   });
 });

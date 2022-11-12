@@ -11,7 +11,7 @@ describe("part 1", () => {
   });
 
   it("real answer", async () => {
-    const input = await fs.readFile("./src/day6.input", "utf8");
+    const input = await fs.readFile("../inputs/day6.txt", "utf8");
     expect(part1(input)).toEqual(377891);
   });
 });
@@ -25,7 +25,7 @@ describe("part 2", () => {
   });
 
   it("real answer", async () => {
-    const input = await fs.readFile("./src/day6.input", "utf8");
+    const input = await fs.readFile("../inputs/day6.txt", "utf8");
     expect(part2(input)).toEqual(14110788);
   });
 });

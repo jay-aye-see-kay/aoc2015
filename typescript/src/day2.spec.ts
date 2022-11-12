@@ -10,7 +10,7 @@ describe("part 1", () => {
   });
 
   it("real answer", async () => {
-    const input = await fs.readFile("./src/day2.input", "utf8");
+    const input = await fs.readFile("../inputs/day2.txt", "utf8");
     expect(part1(input)).toEqual(1606483);
   });
 });
@@ -24,7 +24,7 @@ describe("part 2", () => {
   });
 
   it("real answer", async () => {
-    const input = await fs.readFile("./src/day2.input", "utf8");
+    const input = await fs.readFile("../inputs/day2.txt", "utf8");
     expect(part2(input)).toEqual(3842356);
   });
 });

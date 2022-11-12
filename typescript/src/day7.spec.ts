@@ -26,14 +26,14 @@ describe("part 1", () => {
   });
 
   it("real answer", async () => {
-    const input = await fs.readFile("./src/day7.input", "utf8");
+    const input = await fs.readFile("../inputs/day7.txt", "utf8");
     expect(part1(input).a).toEqual(3176);
   });
 });
 
 describe("part 2", () => {
   it("real answer", async () => {
-    const input = await fs.readFile("./src/day7.input", "utf8");
+    const input = await fs.readFile("../inputs/day7.txt", "utf8");
     expect(part2(input).a).toEqual(14710);
   });
 });
