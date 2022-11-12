@@ -3,6 +3,7 @@
 use std::fs;
 
 mod day1;
+mod day2;
 
 /// helper fn to read the input file all in one
 pub fn read_input(day: i32) -> String {
